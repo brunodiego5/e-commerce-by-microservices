@@ -1,0 +1,10 @@
+GET https://localhost:7063/shoppingcart/123
+
+###
+
+POST https://localhost:7063/shoppingcart/123/items
+Content-Type: application/json
+
+{ 
+    "productIds": [1, 2]
+}

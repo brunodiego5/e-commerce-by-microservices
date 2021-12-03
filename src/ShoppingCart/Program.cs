@@ -1,16 +1,25 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+using ShoppingCart.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+builder.Services.Scan(selector => 
+    selector
+        .FromAssemblyOf<Program>()
+        .AddClasses(c =>
+            c.Where(t =>
+              //t != typeof(ProductCatalogClient) && 
+              //t != typeof(SqlEventStore) && 
+              t.GetMethods().All(m => m.Name != "<Clone>$")))
+        .AsImplementedInterfaces());
+
 builder.Services.AddControllers();
+
 var app = builder.Build();
 
-
 app.UseHttpsRedirection();
-//app.UseRouting();
-//app.UseEndpoints(endpoints =>
-//endpoints.MapControllers());
+
 app.MapControllers();
-app.MapGet("/", () => "Hello World!");
 
 app.Run();
