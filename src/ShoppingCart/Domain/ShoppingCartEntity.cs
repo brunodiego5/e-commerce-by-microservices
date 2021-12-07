@@ -20,7 +20,7 @@ namespace ShoppingCart.Domain
             }
         }
 
-        public void RemoveItems(int[] productCatalogueIds) =>
+        public void RemoveItems(int[] productCatalogueIds, IEventStore _eventStore) =>
             this.items.RemoveWhere(i => productCatalogueIds.Contains(
                 i.ProductCatalogueId));
         

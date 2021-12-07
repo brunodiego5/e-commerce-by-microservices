@@ -25,6 +25,7 @@ namespace ShoppingCart.Controller
         public ShoppingCartEntity Get(int userId) =>
             this._shoppingCartStore.Get(userId);
 
+
         [HttpPost("{userId:int}/items")]
         public async Task<ShoppingCartEntity> Post (
             int userId, 
@@ -39,6 +40,19 @@ namespace ShoppingCart.Controller
             _shoppingCartStore.Save(shoppingCart);
 
             return shoppingCart;   
-        }       
+        }   
+
+        [HttpDelete("{userId:int}/items")]
+        public ShoppingCartEntity Delete(
+            int userId, 
+            [FromBody] int[] productIds)
+        {
+            var shoppingCart = _shoppingCartStore.Get(userId);
+            shoppingCart.RemoveItems(productIds, _eventStore);
+
+            _shoppingCartStore.Save(shoppingCart);
+
+            return shoppingCart;
+        }    
     }
 }
