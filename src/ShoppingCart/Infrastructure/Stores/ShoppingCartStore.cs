@@ -1,4 +1,5 @@
 using ShoppingCart.Domain;
+using ShoppingCart.Domain.Entities;
 using ShoppingCart.Domain.Interfaces;
 
 namespace ShoppingCart.Infrastructure.Store

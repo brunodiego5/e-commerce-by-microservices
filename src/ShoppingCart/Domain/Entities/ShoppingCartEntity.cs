@@ -1,4 +1,4 @@
-namespace ShoppingCart.Domain
+namespace ShoppingCart.Domain.Entities
 {
     using System;
     using System.Collections.Generic;
@@ -16,13 +16,25 @@ namespace ShoppingCart.Domain
         {
             foreach (var item in shoppingCartItems)
             {
-                this.items.Add(item);
+                if (this.items.Add(item))
+                    eventStore.Raise("ShoppingCartItemAdded", new { UserId, item });
             }
         }
 
-        public void RemoveItems(int[] productCatalogueIds, IEventStore _eventStore) =>
+        public void RemoveItems(int[] productCatalogueIds, IEventStore eventStore)
+        {
+            foreach (int id in productCatalogueIds)
+            {
+                var item = this.items.FirstOrDefault(i => i.ProductCatalogueId == id);
+                
+                if (item == null) throw new ArgumentNullException(nameof(item));
+
+                if (this.items.Remove(item))
+                    eventStore.Raise("ShoppingCartItemRemoved", new { UserId, item });
+            }
             this.items.RemoveWhere(i => productCatalogueIds.Contains(
                 i.ProductCatalogueId));
+        }
         
     }
 

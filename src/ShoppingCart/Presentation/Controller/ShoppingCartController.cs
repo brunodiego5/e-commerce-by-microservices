@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using ShoppingCart.Domain;
+using ShoppingCart.Domain.Entities;
 using ShoppingCart.Domain.Interfaces;
 
-namespace ShoppingCart.Controller
+namespace ShoppingCart.Presentation.Controller
 {
     [Route("/shoppingcart")]
     public class ShoppingCartController : ControllerBase
