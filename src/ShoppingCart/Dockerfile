@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["ShoppingCart/ShoppingCart.csproj", "ShoppingCart/"]
 RUN dotnet restore "ShoppingCart/ShoppingCart.csproj"
-COPY . ./
+COPY . .
 WORKDIR "/src/ShoppingCart"
 
 RUN dotnet build "ShoppingCart.csproj" -c Release -o /app/build

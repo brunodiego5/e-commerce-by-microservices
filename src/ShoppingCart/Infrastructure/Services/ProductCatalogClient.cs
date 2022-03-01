@@ -8,16 +8,19 @@ namespace ShoppingCart.Infrastructure.Services
     public class ProductCatalogClient : IProductCatalogClient
     {
         private readonly HttpClient _httpClient;
-        private static string productCatalogBaseUrl = @"https://git.io/JeHie";
+        private static string productCatalogBaseUrl = @"https://git.io/JeHiE";
         private static string getProductPathTemplate = "?productIds=[{0}]";
+        private ILogger<ProductCatalogClient> _logger;
 
-        public ProductCatalogClient(HttpClient httpClient)
+        public ProductCatalogClient(HttpClient httpClient, ILoggerFactory loggerFactory)
         {
+            _logger = loggerFactory.CreateLogger<ProductCatalogClient>();
+
             httpClient.BaseAddress = new Uri(productCatalogBaseUrl);
             httpClient.DefaultRequestHeaders.Accept
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            _httpClient = httpClient;
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
         public async Task<IEnumerable<ShoppingCartItem>> GetShoppingCartItems(int[] productIds)
@@ -32,8 +35,12 @@ namespace ShoppingCart.Infrastructure.Services
         {
             var productsResource = string.Format(getProductPathTemplate,
                 string.Join(",", productCatalogIds));
+
+            var response = await _httpClient.GetAsync(productsResource);
+
+            _logger.LogInformation($"Content response: '{await response.Content.ReadAsStringAsync()}'.");
             
-            return await _httpClient.GetAsync(productsResource);
+            return response;
         }
 
         private static async Task<IEnumerable<ShoppingCartItem>> ConvertToShoppingCartItems(

@@ -5,6 +5,15 @@ GET https://localhost:7063/shoppingcart/123
 POST https://localhost:7063/shoppingcart/123/items
 Content-Type: application/json
 
-{ 
-    "productIds": [1, 2]
-}
+    [1, 2]
+
+###
+
+POST http://10.100.90.166:5000/shoppingcart/15/items
+Content-Type: application/json
+
+    [1, 2]
+
+###
+
+GET http://10.100.90.166:5000/shoppingcart/15
