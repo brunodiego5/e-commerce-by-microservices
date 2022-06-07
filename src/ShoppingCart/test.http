@@ -9,11 +9,11 @@ Content-Type: application/json
 
 ###
 
-POST http://10.100.90.166:5000/shoppingcart/15/items
+POST http://10.106.217.188:5000/shoppingcart/15/items
 Content-Type: application/json
 
     [1, 2]
 
 ###
 
-GET http://10.100.90.166:5000/shoppingcart/15
+GET http://10.106.217.188:5000/shoppingcart/15
