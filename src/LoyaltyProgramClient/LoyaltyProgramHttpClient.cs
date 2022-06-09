@@ -30,7 +30,7 @@ namespace LoyaltyProgramClient
 
         public async Task<HttpResponseMessage> UpdateUser(dynamic user) =>
             await _httpClient.PutAsync(
-                $"/users/{user.id}",
+                $"/users/{user.Id}",
                 CreateBody(user));
 
         public async Task<HttpResponseMessage> QueryUser(string arg) =>

@@ -1,7 +1,7 @@
-using ShoppingCart.Domain.Entities;
-using ShoppingCart.Domain.Interfaces;
+using SpecialOffers.Domain.Interfaces;
+using SpecialOffers.Domain.Entities;
 
-namespace ShoppingCart.Infrastructure.EventFeed
+namespace SpecialOffers.Infrastructure.EventFeed
 {
     public class EventStore : IEventStore
     {
@@ -21,7 +21,6 @@ namespace ShoppingCart.Infrastructure.EventFeed
         public void Raise(string eventName, object content)
         {
             var seqNumber = Interlocked.Increment(ref currentSequenceNumber);
-
             Database.Add(
                 new Event(
                     seqNumber,

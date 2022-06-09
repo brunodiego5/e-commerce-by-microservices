@@ -24,7 +24,7 @@ var circuitBreakerPolicy =
     .OrTransientHttpStatusCode()
     .CircuitBreakerAsync(5, TimeSpan.FromMinutes(1));
 
-var host = args.Length > 0 ? args[0] : "https://localhost:5001";
+var host = args.Length > 0 ? args[0] : "https://localhost:7133";
 
 var serviceProvider =
   new ServiceCollection()

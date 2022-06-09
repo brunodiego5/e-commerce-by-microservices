@@ -1,0 +1,21 @@
+GET https://localhost:7222/offers/2
+
+###
+
+POST https://localhost:7222/offers
+Content-Type: application/json
+
+    {
+        "Description": "Best deal ever!!!"
+    }
+
+###
+
+POST http://10.106.217.188:5000/shoppingcart/15/items
+Content-Type: application/json
+
+    [1, 2]
+
+###
+
+GET http://10.106.217.188:5000/shoppingcart/15

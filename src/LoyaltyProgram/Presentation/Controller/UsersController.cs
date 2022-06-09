@@ -33,13 +33,13 @@ namespace LoyaltyProgram.Presentation.Controller
             // store the new user to a data store
             var userId = RegisteredUsers.Count;
 
-            return RegisteredUsers[userId] = user with { userId = userId};
+            return RegisteredUsers[userId] = user with { Id = userId};
         }
 
         [HttpGet("{userId:int}")]
         public ActionResult<LoyaltyProgramUser> GetUser(int userId) =>
             RegisteredUsers.ContainsKey(userId)
-                ? (ActionResult<LoyaltyProgramUser>) Ok(RegisteredUsersp[userId])
+                ? (ActionResult<LoyaltyProgramUser>) Ok(RegisteredUsers[userId])
                 : NotFound();
     }
 }
