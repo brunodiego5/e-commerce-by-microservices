@@ -1,4 +1,5 @@
 using LoyaltyProgram.Domain;
+using LoyaltyProgram.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoyaltyProgram.Presentation.Controller
@@ -6,8 +7,12 @@ namespace LoyaltyProgram.Presentation.Controller
     [Route("/users")]
     public class UsersController : ControllerBase
     {
-        private static readonly IDictionary<int, LoyaltyProgramUser>
-            RegisteredUsers = new Dictionary<int, LoyaltyProgramUser>();
+        private readonly ILoyaltyProgramStore _loyaltyProgramStore;
+
+        public UsersController(ILoyaltyProgramStore loyaltyProgramStore)
+        {
+            _loyaltyProgramStore = loyaltyProgramStore;
+        }
 
         [HttpPost("")]
         public ActionResult<LoyaltyProgramUser> CreateUser(
@@ -15,7 +20,7 @@ namespace LoyaltyProgram.Presentation.Controller
         {
             if (user == null) return BadRequest();
 
-            var newUser = RegisterUser(user);
+            var newUser = _loyaltyProgramStore.Create(user);
 
             return Created(
                 new Uri($"/users/{newUser.Id}", UriKind.Relative),
@@ -26,20 +31,12 @@ namespace LoyaltyProgram.Presentation.Controller
         public LoyaltyProgramUser UpdateUser(
             int userId,
             [FromBody] LoyaltyProgramUser user
-        ) => RegisteredUsers[userId] = user;
-
-        private LoyaltyProgramUser RegisterUser(LoyaltyProgramUser user)
-        {
-            // store the new user to a data store
-            var userId = RegisteredUsers.Count;
-
-            return RegisteredUsers[userId] = user with { Id = userId};
-        }
+        ) => _loyaltyProgramStore.Update(userId, user);
 
         [HttpGet("{userId:int}")]
         public ActionResult<LoyaltyProgramUser> GetUser(int userId) =>
-            RegisteredUsers.ContainsKey(userId)
-                ? (ActionResult<LoyaltyProgramUser>) Ok(RegisteredUsers[userId])
+            _loyaltyProgramStore.HasUserById(userId)
+                ? (ActionResult<LoyaltyProgramUser>) Ok(_loyaltyProgramStore.Get(userId))
                 : NotFound();
     }
 }
